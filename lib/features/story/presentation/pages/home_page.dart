@@ -90,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                               minimumSize: const Size.fromHeight(52),
                               shape: actionButtonShape,
                             ),
-                            onPressed: () => Navigator.pop(context, false),
+                            onPressed: () => context.pop(false),
                             child: Text(l10n.stayLoggedInButton),
                           ),
                         ),
@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                               backgroundColor: colorScheme.error,
                               foregroundColor: colorScheme.onError,
                             ),
-                            onPressed: () => Navigator.pop(context, true),
+                            onPressed: () => context.pop(true),
                             child: Text(l10n.logoutButton),
                           ),
                         ),
@@ -159,7 +159,7 @@ class _HomePageState extends State<HomePage> {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: ListTile(
-                  onTap: () => Navigator.pop(context, code),
+                  onTap: () => context.pop(code),
                   leading: CircleAvatar(
                     backgroundColor: Theme.of(
                       context,

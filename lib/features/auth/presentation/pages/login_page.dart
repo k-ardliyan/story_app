@@ -183,7 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(height: 8),
                       TextButton(
-                        onPressed: () => context.go(AppRouter.registerPath),
+                        onPressed: () => context.push(AppRouter.registerPath),
                         child: Text(l10n.goToRegister),
                       ),
                     ],
