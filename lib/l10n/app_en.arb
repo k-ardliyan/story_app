@@ -1,0 +1,78 @@
+{
+  "appName": "StoryBloom",
+  "loginTitle": "Welcome Back",
+  "loginSubtitle": "Login to continue sharing your learning stories.",
+  "registerTitle": "Create Account",
+  "registerSubtitle": "Join StoryBloom and start sharing today.",
+  "nameLabel": "Name",
+  "emailLabel": "Email",
+  "passwordLabel": "Password",
+  "loginButton": "Login",
+  "registerButton": "Register",
+  "goToRegister": "Don't have an account? Register",
+  "goToLogin": "Already have an account? Login",
+  "homeTitle": "Story Feed",
+  "addStoryTitle": "Add Story",
+  "storyDetailTitle": "Story Detail",
+  "descriptionLabel": "Description",
+  "descriptionHint": "Tell your learning moment...",
+  "photoLabel": "Photo",
+  "photoPlaceholder": "No photo selected yet",
+  "pickFromCamera": "Camera",
+  "pickFromGallery": "Gallery",
+  "uploadStoryButton": "Upload Story",
+  "refreshTooltip": "Refresh",
+  "showPasswordTooltip": "Show password",
+  "hidePasswordTooltip": "Hide password",
+  "languageButton": "Language",
+  "languageSheetTitle": "Choose app language",
+  "languageSheetMessage": "Select your preferred language for StoryBloom.",
+  "languageEnglish": "English",
+  "languageIndonesian": "Bahasa Indonesia",
+  "logoutButton": "Logout",
+  "logoutSheetTitle": "Leave this session?",
+  "logoutSheetMessage": "You can login again anytime to continue your stories.",
+  "stayLoggedInButton": "Stay Logged In",
+  "errorTitle": "Something went wrong",
+  "retryButton": "Try Again",
+  "emptyStateTitle": "No data",
+  "emptyStoriesTitle": "No stories yet",
+  "emptyStoriesMessage": "Be the first one to share your learning story.",
+  "emailRequiredError": "Email is required",
+  "invalidEmailError": "Email format is invalid",
+  "passwordRequiredError": "Password is required",
+  "passwordMinError": "Password must be at least 8 characters",
+  "nameRequiredError": "Name is required",
+  "descriptionRequiredError": "Description is required",
+  "photoRequiredError": "Photo is required",
+  "photoTooLargeError": "Photo must be less than 1MB",
+  "photoPickFailedError": "Failed to pick photo",
+  "genericError": "An unexpected error happened.",
+  "registerSuccessMessage": "Registration success. Please login.",
+  "uploadSuccessMessage": "Story uploaded successfully.",
+  "locationLabel": "Location",
+  "detailLoadingMessage": "Loading story detail...",
+  "openStoryHint": "Double tap to open story details",
+  "imageUnavailableLabel": "Image unavailable",
+  "storyImageSemanticLabel": "Story photo by {authorName}",
+  "@storyImageSemanticLabel": {
+    "description": "Accessible label for a story image",
+    "placeholders": {
+      "authorName": {
+        "type": "String"
+      }
+    }
+  },
+  "storyCardSemanticLabel": "{authorName}, posted on {createdAt}",
+  "@storyCardSemanticLabel": {
+    "description": "Accessible label for a tappable story card",
+    "placeholders": {
+      "authorName": {
+        "type": "String"
+      },
+      "createdAt": {
+        "type": "String"
+      }
+    }
+  }
+}

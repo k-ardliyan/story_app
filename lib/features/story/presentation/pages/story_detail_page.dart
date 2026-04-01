@@ -1,0 +1,173 @@
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:story_app/l10n/app_localizations.dart';
+
+import '../../../../shared/widgets/gradient_background.dart';
+import '../../../../shared/widgets/shimmer_loading.dart';
+import '../../../../shared/widgets/story_cached_image.dart';
+import '../../../../shared/widgets/status_view.dart';
+import '../../data/models/story_item.dart';
+import '../../data/repositories/story_repository.dart';
+
+class StoryDetailPage extends StatefulWidget {
+  const StoryDetailPage({super.key, required this.storyId, this.initialStory});
+
+  final String storyId;
+  final StoryItem? initialStory;
+
+  @override
+  State<StoryDetailPage> createState() => _StoryDetailPageState();
+}
+
+class _StoryDetailPageState extends State<StoryDetailPage> {
+  late Future<StoryItem> _storyFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStory();
+  }
+
+  void _loadStory() {
+    _storyFuture = context.read<StoryRepository>().getStoryDetail(
+      widget.storyId,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.storyDetailTitle)),
+      body: GradientBackground(
+        child: FutureBuilder<StoryItem>(
+          future: _storyFuture,
+          builder: (BuildContext context, AsyncSnapshot<StoryItem> snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              if (widget.initialStory != null) {
+                return ListView(
+                  children: <Widget>[
+                    _buildHeroImage(
+                      widget.initialStory!.photoUrl,
+                      widget.initialStory!.name,
+                    ),
+                    const SizedBox(height: 16),
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(18),
+                        child: Row(
+                          children: <Widget>[
+                            const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                l10n.detailLoadingMessage,
+                                style: Theme.of(context).textTheme.bodyMedium,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                );
+              }
+              return const StoryDetailShimmer();
+            }
+
+            if (snapshot.hasError) {
+              return StatusView(
+                icon: Icons.error_outline_rounded,
+                type: StatusViewType.error,
+                title: l10n.errorTitle,
+                message: snapshot.error.toString(),
+                actionLabel: l10n.retryButton,
+                onAction: () {
+                  setState(_loadStory);
+                },
+              );
+            }
+
+            final StoryItem? story = snapshot.data;
+            if (story == null) {
+              return StatusView(
+                icon: Icons.info_outline,
+                type: StatusViewType.empty,
+                title: l10n.emptyStateTitle,
+              );
+            }
+
+            return ListView(
+              children: <Widget>[
+                _buildHeroImage(story.photoUrl, story.name),
+                const SizedBox(height: 16),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(18),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          story.name,
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          DateFormat.yMMMd(
+                            Localizations.localeOf(context).toLanguageTag(),
+                          ).add_Hm().format(story.createdAt.toLocal()),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        const SizedBox(height: 16),
+                        Text(
+                          l10n.descriptionLabel,
+                          style: Theme.of(context).textTheme.titleSmall,
+                        ),
+                        const SizedBox(height: 8),
+                        SelectableText(story.description),
+                        if (story.lat != null && story.lon != null) ...<Widget>[
+                          const SizedBox(height: 16),
+                          Text(
+                            l10n.locationLabel,
+                            style: Theme.of(context).textTheme.titleSmall,
+                          ),
+                          const SizedBox(height: 6),
+                          Text('${story.lat}, ${story.lon}'),
+                        ],
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            );
+          },
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeroImage(String photoUrl, String authorName) {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Hero(
+        tag: 'story-image-${widget.storyId}',
+        child: AspectRatio(
+          aspectRatio: 16 / 10,
+          child: StoryCachedImage(
+            imageUrl: photoUrl,
+            semanticLabel: l10n.storyImageSemanticLabel(authorName),
+            unavailableSemanticLabel: l10n.imageUnavailableLabel,
+          ),
+        ),
+      ),
+    );
+  }
+}
