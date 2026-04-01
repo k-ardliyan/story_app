@@ -1,7 +1,7 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import '../features/story/data/models/story_item.dart';
-import '../shared/widgets/status_view.dart';
+import 'widgets/missing_story_page.dart';
 
 import '../features/auth/presentation/pages/login_page.dart';
 import '../features/auth/presentation/pages/register_page.dart';
@@ -63,7 +63,7 @@ class AppRouter {
           builder: (BuildContext context, GoRouterState state) {
             final String? id = state.pathParameters['id'];
             if (id == null || id.isEmpty) {
-              return const _MissingStoryPage();
+              return const MissingStoryPage();
             }
             final StoryItem? initialStory = state.extra is StoryItem
                 ? state.extra as StoryItem
@@ -78,21 +78,6 @@ class AppRouter {
           },
         ),
       ],
-    );
-  }
-}
-
-class _MissingStoryPage extends StatelessWidget {
-  const _MissingStoryPage();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: StatusView(
-        icon: Icons.find_in_page_outlined,
-        type: StatusViewType.empty,
-        title: 'Story not found.',
-      ),
     );
   }
 }

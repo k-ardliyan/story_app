@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:intl/intl.dart' hide TextDirection;
 import 'package:provider/provider.dart';
 import 'package:story_app/l10n/app_localizations.dart';
 
@@ -9,10 +8,10 @@ import '../../../../app/router.dart';
 import '../../../../core/network/app_error_message_resolver.dart';
 import '../../../../shared/widgets/gradient_background.dart';
 import '../../../../shared/widgets/shimmer_loading.dart';
-import '../../../../shared/widgets/story_cached_image.dart';
 import '../../../../shared/widgets/status_view.dart';
 import '../../../auth/presentation/viewmodels/auth_view_model.dart';
 import '../viewmodels/story_list_view_model.dart';
+import '../widgets/story_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -323,7 +322,7 @@ class _HomePageState extends State<HomePage> {
                         padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
                         itemBuilder: (BuildContext context, int index) {
                           final story = storyViewModel.stories[index];
-                          return _StoryCard(
+                          return StoryCard(
                             heroTag: 'story-image-${story.id}',
                             name: story.name,
                             description: story.description,
@@ -358,104 +357,6 @@ class _HomePageState extends State<HomePage> {
         tooltip: l10n.addStoryTitle,
         icon: const Icon(Icons.add_a_photo_outlined),
         label: Text(l10n.addStoryTitle),
-      ),
-    );
-  }
-}
-
-class _StoryCard extends StatelessWidget {
-  const _StoryCard({
-    required this.heroTag,
-    required this.name,
-    required this.description,
-    required this.photoUrl,
-    required this.createdAt,
-    required this.onTap,
-  });
-
-  final String heroTag;
-  final String name;
-  final String description;
-  final String photoUrl;
-  final DateTime createdAt;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final AppLocalizations l10n = AppLocalizations.of(context)!;
-    final String locale = Localizations.localeOf(context).toLanguageTag();
-    final String createdAtLabel = DateFormat.yMMMd(
-      locale,
-    ).add_Hm().format(createdAt.toLocal());
-
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: Semantics(
-        button: true,
-        onTap: onTap,
-        label: l10n.storyCardSemanticLabel(name, createdAtLabel),
-        hint: l10n.openStoryHint,
-        child: ExcludeSemantics(
-          child: InkWell(
-            onTap: onTap,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                AspectRatio(
-                  aspectRatio: 16 / 9,
-                  child: Hero(
-                    tag: heroTag,
-                    child: StoryCachedImage(
-                      imageUrl: photoUrl,
-                      semanticLabel: l10n.storyImageSemanticLabel(name),
-                      unavailableSemanticLabel: l10n.imageUnavailableLabel,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(14, 12, 14, 14),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        name,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.titleMedium,
-                      ),
-                      const SizedBox(height: 6),
-                      Text(
-                        description,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      const SizedBox(height: 10),
-                      Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.schedule_rounded,
-                            size: 16,
-                            color: Theme.of(context).colorScheme.primary,
-                          ),
-                          const SizedBox(width: 6),
-                          Expanded(
-                            child: Text(
-                              createdAtLabel,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
       ),
     );
   }

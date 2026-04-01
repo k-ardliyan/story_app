@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'app/app.dart';
@@ -16,38 +17,42 @@ import 'features/story/presentation/viewmodels/story_list_view_model.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final SharedPreferences preferences = await SharedPreferences.getInstance();
-  final SessionStorage sessionStorage = SessionStorage(preferences);
-  final AppSettingsStorage appSettingsStorage = AppSettingsStorage(preferences);
+  final preferences = await SharedPreferences.getInstance();
+  final sessionStorage = SessionStorage(preferences);
+  final appSettingsStorage = AppSettingsStorage(preferences);
 
-  final AuthApiService authApiService = AuthApiService(http.Client());
-  final StoryApiService storyApiService = StoryApiService(http.Client());
+  final authApiService = AuthApiService(http.Client());
+  final storyApiService = StoryApiService(http.Client());
 
-  final AuthRepository authRepository = AuthRepository(
+  final authRepository = AuthRepository(
     authApiService: authApiService,
     sessionStorage: sessionStorage,
   );
-  final StoryRepository storyRepository = StoryRepository(
+  final storyRepository = StoryRepository(
     storyApiService: storyApiService,
     sessionStorage: sessionStorage,
   );
 
-  final AuthViewModel authViewModel = AuthViewModel(
-    authRepository: authRepository,
-  );
-  final LocaleViewModel localeViewModel = LocaleViewModel(
-    settingsStorage: appSettingsStorage,
+  final authViewModel = AuthViewModel(authRepository: authRepository);
+  final localeViewModel = LocaleViewModel(settingsStorage: appSettingsStorage);
+  final storyListViewModel = StoryListViewModel(
+    storyRepository: storyRepository,
   );
 
   await authViewModel.restoreSession();
   await localeViewModel.restoreLocale();
 
   runApp(
-    StoryBloomApp(
-      authViewModel: authViewModel,
-      localeViewModel: localeViewModel,
-      storyListViewModel: StoryListViewModel(storyRepository: storyRepository),
-      storyRepository: storyRepository,
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthViewModel>.value(value: authViewModel),
+        ChangeNotifierProvider<LocaleViewModel>.value(value: localeViewModel),
+        ChangeNotifierProvider<StoryListViewModel>.value(
+          value: storyListViewModel,
+        ),
+        Provider<StoryRepository>.value(value: storyRepository),
+      ],
+      child: const StoryBloomApp(),
     ),
   );
 }
