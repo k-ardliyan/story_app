@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app/l10n/app_localizations.dart';
 
+import '../../../../core/network/app_error_message_resolver.dart';
 import '../../../../shared/widgets/gradient_background.dart';
 import '../../../../shared/widgets/shimmer_loading.dart';
 import '../../../../shared/widgets/story_cached_image.dart';
@@ -86,7 +87,10 @@ class _StoryDetailPageState extends State<StoryDetailPage> {
                 icon: Icons.error_outline_rounded,
                 type: StatusViewType.error,
                 title: l10n.errorTitle,
-                message: snapshot.error.toString(),
+                message: AppErrorMessageResolver.fromError(
+                  l10n,
+                  snapshot.error,
+                ),
                 actionLabel: l10n.retryButton,
                 onAction: () {
                   setState(_loadStory);

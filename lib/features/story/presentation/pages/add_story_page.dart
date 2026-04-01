@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:story_app/l10n/app_localizations.dart';
 
 import '../../../../app/router.dart';
+import '../../../../core/network/app_error_message_resolver.dart';
 import '../../../../shared/widgets/gradient_background.dart';
 import '../../data/repositories/story_repository.dart';
 import '../viewmodels/add_story_view_model.dart';
@@ -50,7 +51,7 @@ class _AddStoryPageState extends State<AddStoryPage> {
       case AddStoryViewModel.errorDescriptionRequired:
         return l10n.descriptionRequiredError;
       default:
-        return errorCode ?? l10n.genericError;
+        return AppErrorMessageResolver.fromCode(l10n, errorCode);
     }
   }
 

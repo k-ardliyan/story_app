@@ -386,6 +386,66 @@ abstract class AppLocalizations {
   /// **'Failed to pick photo'**
   String get photoPickFailedError;
 
+  /// No description provided for @offlineError.
+  ///
+  /// In en, this message translates to:
+  /// **'No internet connection. Please check your network and try again.'**
+  String get offlineError;
+
+  /// No description provided for @requestTimeoutError.
+  ///
+  /// In en, this message translates to:
+  /// **'The request took too long. Please try again.'**
+  String get requestTimeoutError;
+
+  /// No description provided for @sessionExpiredError.
+  ///
+  /// In en, this message translates to:
+  /// **'Your session has expired. Please login again.'**
+  String get sessionExpiredError;
+
+  /// No description provided for @unauthorizedError.
+  ///
+  /// In en, this message translates to:
+  /// **'Your email or password is incorrect.'**
+  String get unauthorizedError;
+
+  /// No description provided for @forbiddenError.
+  ///
+  /// In en, this message translates to:
+  /// **'You do not have permission to perform this action.'**
+  String get forbiddenError;
+
+  /// No description provided for @notFoundError.
+  ///
+  /// In en, this message translates to:
+  /// **'The requested data could not be found.'**
+  String get notFoundError;
+
+  /// No description provided for @tooManyRequestsError.
+  ///
+  /// In en, this message translates to:
+  /// **'Too many attempts. Please wait a moment and try again.'**
+  String get tooManyRequestsError;
+
+  /// No description provided for @serverError.
+  ///
+  /// In en, this message translates to:
+  /// **'The service is having issues. Please try again later.'**
+  String get serverError;
+
+  /// No description provided for @badRequestError.
+  ///
+  /// In en, this message translates to:
+  /// **'The submitted data is invalid. Please review your input.'**
+  String get badRequestError;
+
+  /// No description provided for @serviceUnavailableError.
+  ///
+  /// In en, this message translates to:
+  /// **'The service is currently unavailable. Please try again later.'**
+  String get serviceUnavailableError;
+
   /// No description provided for @genericError.
   ///
   /// In en, this message translates to:

@@ -1,3 +1,4 @@
+import '../../../../core/network/app_error_codes.dart';
 import '../../../../core/network/api_exception.dart';
 import '../../../../core/storage/session_storage.dart';
 import '../models/story_item.dart';
@@ -42,7 +43,7 @@ class StoryRepository {
   String _requireToken() {
     final String? token = _sessionStorage.token;
     if (token == null || token.isEmpty) {
-      throw ApiException('Session expired. Please login again.');
+      throw ApiException(AppErrorCodes.sessionExpired);
     }
     return token;
   }

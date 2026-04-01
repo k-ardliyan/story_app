@@ -157,6 +157,44 @@ class AppLocalizationsId extends AppLocalizations {
   String get photoPickFailedError => 'Gagal memilih foto';
 
   @override
+  String get offlineError =>
+      'Tidak ada koneksi internet. Periksa koneksi lalu coba lagi.';
+
+  @override
+  String get requestTimeoutError =>
+      'Permintaan memakan waktu terlalu lama. Silakan coba lagi.';
+
+  @override
+  String get sessionExpiredError =>
+      'Sesi Anda sudah berakhir. Silakan masuk kembali.';
+
+  @override
+  String get unauthorizedError => 'Email atau kata sandi belum sesuai.';
+
+  @override
+  String get forbiddenError =>
+      'Anda tidak memiliki izin untuk melakukan tindakan ini.';
+
+  @override
+  String get notFoundError => 'Data yang Anda cari tidak ditemukan.';
+
+  @override
+  String get tooManyRequestsError =>
+      'Terlalu banyak percobaan. Tunggu sebentar lalu coba lagi.';
+
+  @override
+  String get serverError =>
+      'Layanan sedang bermasalah. Silakan coba beberapa saat lagi.';
+
+  @override
+  String get badRequestError =>
+      'Data yang dikirim belum valid. Periksa kembali input Anda.';
+
+  @override
+  String get serviceUnavailableError =>
+      'Layanan sedang tidak tersedia. Silakan coba lagi nanti.';
+
+  @override
   String get genericError => 'Terjadi kesalahan yang tidak terduga.';
 
   @override

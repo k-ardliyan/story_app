@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../../../core/network/app_error_mapper.dart';
 import '../../data/repositories/story_repository.dart';
 
 class AddStoryViewModel extends ChangeNotifier {
@@ -99,9 +100,6 @@ class AddStoryViewModel extends ChangeNotifier {
   }
 
   String _parseError(Object error) {
-    if (error is Exception) {
-      return error.toString().replaceFirst('Exception: ', '');
-    }
-    return 'Unknown error happened.';
+    return AppErrorMapper.toCode(error);
   }
 }

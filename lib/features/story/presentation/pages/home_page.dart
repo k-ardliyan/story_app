@@ -6,6 +6,7 @@ import 'package:story_app/l10n/app_localizations.dart';
 
 import '../../../../app/viewmodels/locale_view_model.dart';
 import '../../../../app/router.dart';
+import '../../../../core/network/app_error_message_resolver.dart';
 import '../../../../shared/widgets/gradient_background.dart';
 import '../../../../shared/widgets/shimmer_loading.dart';
 import '../../../../shared/widgets/story_cached_image.dart';
@@ -293,7 +294,10 @@ class _HomePageState extends State<HomePage> {
                     icon: Icons.cloud_off_rounded,
                     type: StatusViewType.error,
                     title: l10n.errorTitle,
-                    message: storyViewModel.errorMessage,
+                    message: AppErrorMessageResolver.fromCode(
+                      l10n,
+                      storyViewModel.errorMessage,
+                    ),
                     actionLabel: l10n.retryButton,
                     onAction: () => storyViewModel.refresh(),
                   );

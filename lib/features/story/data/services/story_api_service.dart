@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:http/http.dart' as http;
 
 import '../../../../core/constants/api_constants.dart';
+import '../../../../core/network/app_error_codes.dart';
+import '../../../../core/network/app_error_mapper.dart';
 import '../../../../core/network/api_exception.dart';
 import '../models/story_item.dart';
 
@@ -41,11 +44,19 @@ class StoryApiService {
       }
 
       throw ApiException(
-        (data['message'] as String?) ?? 'Failed to fetch stories.',
+        _mapStoryStatusCode(response.statusCode),
         statusCode: response.statusCode,
       );
+    } on SocketException {
+      throw ApiException(AppErrorCodes.noInternet);
+    } on http.ClientException {
+      throw ApiException(AppErrorCodes.serviceUnavailable);
     } on TimeoutException {
-      throw ApiException('Connection timed out. Please try again.');
+      throw ApiException(AppErrorCodes.requestTimeout);
+    } on ApiException {
+      rethrow;
+    } catch (_) {
+      throw ApiException(AppErrorCodes.unknown);
     }
   }
 
@@ -71,11 +82,19 @@ class StoryApiService {
       }
 
       throw ApiException(
-        (data['message'] as String?) ?? 'Failed to fetch story detail.',
+        _mapStoryStatusCode(response.statusCode),
         statusCode: response.statusCode,
       );
+    } on SocketException {
+      throw ApiException(AppErrorCodes.noInternet);
+    } on http.ClientException {
+      throw ApiException(AppErrorCodes.serviceUnavailable);
     } on TimeoutException {
-      throw ApiException('Connection timed out. Please try again.');
+      throw ApiException(AppErrorCodes.requestTimeout);
+    } on ApiException {
+      rethrow;
+    } catch (_) {
+      throw ApiException(AppErrorCodes.unknown);
     }
   }
 
@@ -114,11 +133,19 @@ class StoryApiService {
       }
 
       throw ApiException(
-        (data['message'] as String?) ?? 'Failed to upload story.',
+        _mapStoryStatusCode(response.statusCode),
         statusCode: response.statusCode,
       );
+    } on SocketException {
+      throw ApiException(AppErrorCodes.noInternet);
+    } on http.ClientException {
+      throw ApiException(AppErrorCodes.serviceUnavailable);
     } on TimeoutException {
-      throw ApiException('Connection timed out. Please try again.');
+      throw ApiException(AppErrorCodes.requestTimeout);
+    } on ApiException {
+      rethrow;
+    } catch (_) {
+      throw ApiException(AppErrorCodes.unknown);
     }
   }
 
@@ -129,13 +156,21 @@ class StoryApiService {
         return decoded;
       }
     } on FormatException {
-      throw ApiException('Unexpected server response.');
+      throw ApiException(AppErrorCodes.server, statusCode: response.statusCode);
     }
 
-    throw ApiException('Unexpected server response.');
+    throw ApiException(AppErrorCodes.server, statusCode: response.statusCode);
   }
 
   Map<String, String> _authorizedHeaders(String token) => <String, String>{
     'Authorization': 'Bearer $token',
   };
+
+  String _mapStoryStatusCode(int statusCode) {
+    if (statusCode == 401) {
+      return AppErrorCodes.sessionExpired;
+    }
+
+    return AppErrorMapper.fromStatusCode(statusCode);
+  }
 }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:story_app/l10n/app_localizations.dart';
 
 import '../../../../app/router.dart';
+import '../../../../core/network/app_error_message_resolver.dart';
 import '../../../../shared/widgets/gradient_background.dart';
 import '../viewmodels/auth_view_model.dart';
 
@@ -49,7 +50,10 @@ class _RegisterPageState extends State<RegisterPage> {
     }
 
     if (!success) {
-      final String message = authViewModel.errorMessage ?? l10n.genericError;
+      final String message = AppErrorMessageResolver.fromCode(
+        l10n,
+        authViewModel.errorMessage,
+      );
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text(message)));

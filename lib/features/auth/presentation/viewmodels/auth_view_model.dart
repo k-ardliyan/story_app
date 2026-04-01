@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../../core/network/app_error_mapper.dart';
 import '../../data/models/auth_session.dart';
 import '../../data/repositories/auth_repository.dart';
 
@@ -81,9 +82,6 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   String _parseError(Object error) {
-    if (error is Exception) {
-      return error.toString().replaceFirst('Exception: ', '');
-    }
-    return 'Unknown error happened.';
+    return AppErrorMapper.toCode(error);
   }
 }

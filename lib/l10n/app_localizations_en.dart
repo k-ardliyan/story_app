@@ -157,6 +157,44 @@ class AppLocalizationsEn extends AppLocalizations {
   String get photoPickFailedError => 'Failed to pick photo';
 
   @override
+  String get offlineError =>
+      'No internet connection. Please check your network and try again.';
+
+  @override
+  String get requestTimeoutError =>
+      'The request took too long. Please try again.';
+
+  @override
+  String get sessionExpiredError =>
+      'Your session has expired. Please login again.';
+
+  @override
+  String get unauthorizedError => 'Your email or password is incorrect.';
+
+  @override
+  String get forbiddenError =>
+      'You do not have permission to perform this action.';
+
+  @override
+  String get notFoundError => 'The requested data could not be found.';
+
+  @override
+  String get tooManyRequestsError =>
+      'Too many attempts. Please wait a moment and try again.';
+
+  @override
+  String get serverError =>
+      'The service is having issues. Please try again later.';
+
+  @override
+  String get badRequestError =>
+      'The submitted data is invalid. Please review your input.';
+
+  @override
+  String get serviceUnavailableError =>
+      'The service is currently unavailable. Please try again later.';
+
+  @override
   String get genericError => 'An unexpected error happened.';
 
   @override
