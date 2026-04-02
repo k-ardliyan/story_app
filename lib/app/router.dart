@@ -8,6 +8,7 @@ import '../features/auth/presentation/pages/register_page.dart';
 import '../features/auth/presentation/viewmodels/auth_view_model.dart';
 import '../features/story/presentation/pages/add_story_page.dart';
 import '../features/story/presentation/pages/home_page.dart';
+import '../features/story/presentation/pages/location_picker_page.dart';
 import '../features/story/presentation/pages/story_detail_page.dart';
 
 class AppRouter {
@@ -16,6 +17,8 @@ class AppRouter {
   static const String homePath = '/home';
   static const String storyPath = '/story';
   static const String addStoryPath = '/add-story';
+  static const String addStoryLocationPickerPath =
+      '$addStoryPath/location-picker';
 
   static GoRouter createRouter({required AuthViewModel authViewModel}) {
     return GoRouter(
@@ -75,6 +78,19 @@ class AppRouter {
           path: addStoryPath,
           builder: (BuildContext context, GoRouterState state) {
             return const AddStoryPage();
+          },
+        ),
+        GoRoute(
+          path: addStoryLocationPickerPath,
+          builder: (BuildContext context, GoRouterState state) {
+            final LocationPickerInitialData? initialData =
+                state.extra is LocationPickerInitialData
+                ? state.extra as LocationPickerInitialData
+                : null;
+            return LocationPickerPage(
+              initialLatitude: initialData?.initialLatitude,
+              initialLongitude: initialData?.initialLongitude,
+            );
           },
         ),
       ],

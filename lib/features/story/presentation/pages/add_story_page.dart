@@ -117,15 +117,12 @@ class _AddStoryPageState extends State<AddStoryPage> {
       return;
     }
 
-    final LocationSelectionResult? selection = await Navigator.of(context)
+    final LocationSelectionResult? selection = await context
         .push<LocationSelectionResult>(
-          MaterialPageRoute<LocationSelectionResult>(
-            builder: (BuildContext context) {
-              return LocationPickerPage(
-                initialLatitude: _viewModel.selectedLatitude,
-                initialLongitude: _viewModel.selectedLongitude,
-              );
-            },
+          AppRouter.addStoryLocationPickerPath,
+          extra: LocationPickerInitialData(
+            initialLatitude: _viewModel.selectedLatitude,
+            initialLongitude: _viewModel.selectedLongitude,
           ),
         );
 

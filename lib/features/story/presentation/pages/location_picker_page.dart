@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:go_router/go_router.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app/l10n/app_localizations.dart';
@@ -20,6 +21,16 @@ class LocationSelectionResult {
   final double latitude;
   final double longitude;
   final String address;
+}
+
+class LocationPickerInitialData {
+  const LocationPickerInitialData({
+    this.initialLatitude,
+    this.initialLongitude,
+  });
+
+  final double? initialLatitude;
+  final double? initialLongitude;
 }
 
 class LocationPickerPage extends StatefulWidget {
@@ -230,7 +241,7 @@ class _LocationPickerPageState extends State<LocationPickerPage> {
       return;
     }
 
-    Navigator.of(context).pop(
+    context.pop(
       LocationSelectionResult(
         latitude: point.latitude,
         longitude: point.longitude,
