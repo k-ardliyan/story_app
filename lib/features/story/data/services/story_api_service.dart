@@ -15,11 +15,21 @@ class StoryApiService {
 
   final http.Client _client;
 
-  Future<List<StoryItem>> fetchStories({required String token}) async {
+  Future<List<StoryItem>> fetchStories({
+    required String token,
+    required int page,
+    required int size,
+  }) async {
     try {
       final http.Response response = await _client
           .get(
-            ApiConstants.buildUri('/stories'),
+            ApiConstants.buildUri(
+              '/stories',
+              queryParameters: <String, String>{
+                'page': page.toString(),
+                'size': size.toString(),
+              },
+            ),
             headers: _authorizedHeaders(token),
           )
           .timeout(const Duration(seconds: 25));

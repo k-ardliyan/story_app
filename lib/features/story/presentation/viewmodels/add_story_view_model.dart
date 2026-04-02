@@ -12,21 +12,51 @@ class AddStoryViewModel extends ChangeNotifier {
 
   AddStoryViewModel({
     required StoryRepository storyRepository,
+    required bool locationEnabled,
     ImagePicker? imagePicker,
   }) : _storyRepository = storyRepository,
+       _locationEnabled = locationEnabled,
        _imagePicker = imagePicker ?? ImagePicker();
 
   final StoryRepository _storyRepository;
+  final bool _locationEnabled;
   final ImagePicker _imagePicker;
   static const int _maxImageBytes = 1024 * 1024;
 
   XFile? _selectedImage;
+  double? _selectedLatitude;
+  double? _selectedLongitude;
+  String? _selectedAddress;
   bool _isSubmitting = false;
   String? _errorMessage;
 
   XFile? get selectedImage => _selectedImage;
+  bool get isLocationEnabled => _locationEnabled;
+  bool get hasLocationSelection =>
+      _selectedLatitude != null && _selectedLongitude != null;
+  double? get selectedLatitude => _selectedLatitude;
+  double? get selectedLongitude => _selectedLongitude;
+  String? get selectedAddress => _selectedAddress;
   bool get isSubmitting => _isSubmitting;
   String? get errorMessage => _errorMessage;
+
+  void setLocation({
+    required double latitude,
+    required double longitude,
+    required String address,
+  }) {
+    _selectedLatitude = latitude;
+    _selectedLongitude = longitude;
+    _selectedAddress = address;
+    notifyListeners();
+  }
+
+  void clearLocation() {
+    _selectedLatitude = null;
+    _selectedLongitude = null;
+    _selectedAddress = null;
+    notifyListeners();
+  }
 
   Future<bool> pickImage(ImageSource source) async {
     try {
@@ -88,6 +118,8 @@ class AddStoryViewModel extends ChangeNotifier {
       await _storyRepository.addStory(
         description: cleanDescription,
         photoPath: _selectedImage!.path,
+        lat: _locationEnabled ? _selectedLatitude : null,
+        lon: _locationEnabled ? _selectedLongitude : null,
       );
       return true;
     } catch (error) {

@@ -14,9 +14,9 @@ class StoryRepository {
   final StoryApiService _storyApiService;
   final SessionStorage _sessionStorage;
 
-  Future<List<StoryItem>> getStories() {
+  Future<List<StoryItem>> getStories({required int page, required int size}) {
     final String token = _requireToken();
-    return _storyApiService.fetchStories(token: token);
+    return _storyApiService.fetchStories(token: token, page: page, size: size);
   }
 
   Future<StoryItem> getStoryDetail(String storyId) {

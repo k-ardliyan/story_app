@@ -10,6 +10,8 @@ android {
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
+    flavorDimensions += "tier"
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -28,6 +30,23 @@ android {
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        manifestPlaceholders["appName"] = "StoryBloom"
+    }
+
+    productFlavors {
+        create("free") {
+            dimension = "tier"
+            applicationIdSuffix = ".free"
+            versionNameSuffix = "-free"
+            manifestPlaceholders["appName"] = "StoryBloom Free"
+        }
+
+        create("paid") {
+            dimension = "tier"
+            applicationIdSuffix = ".paid"
+            versionNameSuffix = "-paid"
+            manifestPlaceholders["appName"] = "StoryBloom Paid"
+        }
     }
 
     buildTypes {

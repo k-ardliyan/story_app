@@ -6,6 +6,7 @@ import 'package:story_app/l10n/app_localizations.dart';
 import '../../../../app/viewmodels/locale_view_model.dart';
 import '../../../../app/router.dart';
 import '../../../../core/network/app_error_message_resolver.dart';
+import '../../../../shared/widgets/flavor_chip.dart';
 import '../../../../shared/widgets/gradient_background.dart';
 import '../../../../shared/widgets/shimmer_loading.dart';
 import '../../../../shared/widgets/status_view.dart';
@@ -21,12 +22,36 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final ScrollController _scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_handleScroll);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<StoryListViewModel>().fetchStories();
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_handleScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  void _handleScroll() {
+    if (!_scrollController.hasClients) {
+      return;
+    }
+
+    final double remaining =
+        _scrollController.position.maxScrollExtent - _scrollController.offset;
+
+    if (remaining <= 220) {
+      context.read<StoryListViewModel>().fetchMoreStories();
+    }
   }
 
   Future<void> _logout() async {
@@ -243,6 +268,64 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  Widget _buildPaginationFooter(
+    BuildContext context,
+    StoryListViewModel storyViewModel,
+    AppLocalizations l10n,
+  ) {
+    if (storyViewModel.isLoadingMore) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 16),
+        child: Center(
+          child: SizedBox(
+            width: 22,
+            height: 22,
+            child: CircularProgressIndicator(strokeWidth: 2.2),
+          ),
+        ),
+      );
+    }
+
+    if (storyViewModel.paginationErrorMessage != null) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 16),
+        child: Center(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Text(
+                AppErrorMessageResolver.fromCode(
+                  l10n,
+                  storyViewModel.paginationErrorMessage,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              FilledButton.tonal(
+                onPressed: storyViewModel.fetchMoreStories,
+                child: Text(l10n.retryLoadMoreStoriesButton),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (!storyViewModel.hasMore) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 20),
+        child: Center(
+          child: Text(
+            l10n.noMoreStoriesMessage,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+      );
+    }
+
+    return const SizedBox(height: 8);
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppLocalizations l10n = AppLocalizations.of(context)!;
@@ -250,13 +333,19 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 52,
+        leadingWidth: 118,
         leading: Padding(
-          padding: const EdgeInsets.only(left: 4),
-          child: _buildToolbarIconButton(
-            tooltip: l10n.languageButton,
-            onPressed: _showLanguageSheet,
-            icon: Icons.translate_rounded,
+          padding: const EdgeInsets.only(left: 8),
+          child: Row(
+            children: <Widget>[
+              const FlavorChip(iconOnly: true),
+              const SizedBox(width: 4),
+              _buildToolbarIconButton(
+                tooltip: l10n.languageButton,
+                onPressed: _showLanguageSheet,
+                icon: Icons.translate_rounded,
+              ),
+            ],
           ),
         ),
         title: Text(l10n.homeTitle),
@@ -318,9 +407,18 @@ class _HomePageState extends State<HomePage> {
                     RefreshIndicator(
                       onRefresh: storyViewModel.refresh,
                       child: ListView.separated(
+                        controller: _scrollController,
                         physics: const AlwaysScrollableScrollPhysics(),
                         padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
                         itemBuilder: (BuildContext context, int index) {
+                          if (index == storyViewModel.stories.length) {
+                            return _buildPaginationFooter(
+                              context,
+                              storyViewModel,
+                              l10n,
+                            );
+                          }
+
                           final story = storyViewModel.stories[index];
                           return StoryCard(
                             heroTag: 'story-image-${story.id}',
@@ -337,10 +435,11 @@ class _HomePageState extends State<HomePage> {
                         separatorBuilder: (BuildContext context, int index) {
                           return const SizedBox(height: 12);
                         },
-                        itemCount: storyViewModel.stories.length,
+                        itemCount: storyViewModel.stories.length + 1,
                       ),
                     ),
-                    if (storyViewModel.isLoading)
+                    if (storyViewModel.isLoading &&
+                        storyViewModel.stories.isNotEmpty)
                       const Positioned(
                         top: 0,
                         left: 0,

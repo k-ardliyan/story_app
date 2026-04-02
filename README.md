@@ -1,138 +1,181 @@
 # StoryBloom (Story App)
 
-Aplikasi Flutter untuk submission Story App Dicoding dengan fokus pada:
+Aplikasi Flutter untuk submission Story App Dicoding.
 
-- Auth (register, login, logout) dengan session persistence.
-- Daftar cerita, detail cerita, dan upload cerita baru (foto + deskripsi).
-- Localization (Bahasa Indonesia dan English).
-- Accessibility (semantics, tooltip aksesibel, tap target yang layak).
-- UI modern dengan state loading/error/empty yang jelas.
+README ini sudah diperbarui untuk mendukung **Build Variant / Flavor** supaya aman untuk yang baru pertama kali menjalankan project.
 
-## Fitur Utama
+## Ringkasan Fitur
 
-1. Autentikasi
-- Register akun baru.
-- Login akun existing.
-- Session token disimpan lokal agar tetap login saat app dibuka ulang.
-- Logout dengan konfirmasi.
+- Auth: register, login, logout, session persistence.
+- Story feed: list cerita dengan infinite scrolling pagination.
+- Story detail: detail cerita + peta Leaflet jika ada lokasi.
+- Add story: upload foto + deskripsi, dengan behavior berbeda per flavor.
+- Localization: Bahasa Indonesia (`id`) dan English (`en`).
+- Accessibility: semantics, tooltip, dan tap target yang layak.
 
-2. Story Feed
-- Menampilkan daftar cerita dari API (urut terbaru).
-- Pull-to-refresh untuk memuat ulang.
-- Status loading (shimmer), error, dan empty state.
+## Build Variant (Free vs Paid)
 
-3. Story Detail
-- Menampilkan detail cerita berdasarkan ID.
-- Hero transition dari list ke detail.
-- Menampilkan deskripsi, waktu publikasi, serta lokasi (jika tersedia).
+Project ini punya 2 flavor:
 
-4. Add Story
-- Pilih gambar dari kamera atau galeri.
-- Validasi ukuran gambar maksimal 1MB.
-- Upload multipart ke endpoint story.
-- Setelah upload sukses, daftar cerita otomatis di-refresh.
+- **free**
+  - Add Story **tidak bisa memilih lokasi**.
+  - Section lokasi tampil dalam mode locked + info upgrade.
+  - AppBar menampilkan badge `FREE`.
+- **paid**
+  - Add Story bisa memilih lokasi lewat peta Leaflet.
+  - Ada info lokasi aktif + kontrol pilih/ubah/hapus lokasi.
+  - AppBar menampilkan badge `PAID`.
+  - Payload upload bisa menyertakan `lat` dan `lon`.
 
-5. Localization (l10n)
-- Dukungan bahasa: `id` dan `en`.
-- Pergantian bahasa dari UI (tersimpan di local storage).
-- String dikelola via ARB dan generated localization.
+### Mapping Entry Point
 
-6. Accessibility (a11y)
-- Semantics pada komponen penting (kartu cerita, gambar, preview).
-- Tooltip untuk aksi ikon termasuk show/hide password.
-- Ukuran tap target tombol toolbar ditingkatkan agar lebih ramah akses.
+- `lib/main_free.dart` -> flavor **free**
+- `lib/main_paid.dart` -> flavor **paid**
+- `lib/main.dart` -> auto-detect dari `--flavor` (`FLUTTER_APP_FLAVOR`), fallback ke **paid**
+
+Artinya, `flutter run --flavor free -t lib/main.dart` tetap terbaca sebagai free.
+Kalau hanya menjalankan `flutter run` tanpa argumen, aplikasi akan jalan sebagai paid.
 
 ## Teknologi dan Paket
 
 - Flutter (Material 3)
-- `go_router` (declarative routing)
+- `go_router` (routing)
 - `provider` (state management)
-- `http` (REST API + multipart)
-- `shared_preferences` (session dan preferensi bahasa)
+- `http` (REST + multipart)
+- `shared_preferences` (session + preferensi)
 - `image_picker` (kamera/galeri)
 - `cached_network_image` + `shimmer` (image loading UX)
+- `flutter_map` + `latlong2` (Leaflet map)
+- `geocoding` (reverse geocoding)
+- `freezed` + `json_serializable` + `build_runner` (code generation)
 - `intl` + `flutter_localizations` (lokalisasi)
-
-## Struktur Ringkas
-
-```text
-lib/
-	app/                 # App root, router, app-level viewmodel
-	core/                # Constants, storage, theme, errors
-	features/
-		auth/              # Auth data + presentation
-		story/             # Story data + presentation
-	shared/widgets/      # Reusable UI widgets
-	l10n/                # ARB dan generated localization
-```
-
-## API
-
-- Base URL: `https://story-api.dicoding.dev/v1`
-- Endpoint utama:
-	- `POST /register`
-	- `POST /login`
-	- `GET /stories` (Bearer token)
-	- `GET /stories/:id` (Bearer token)
-	- `POST /stories` multipart (Bearer token)
-
-Catatan:
-- Tidak menggunakan endpoint guest.
-- Token hasil login digunakan untuk endpoint protected.
 
 ## Persiapan Environment
 
 Pastikan sudah terpasang:
 
-- Flutter SDK (dengan Dart yang memenuhi constraint `^3.11.4`)
+- Flutter SDK (Dart constraint project: `^3.11.4`)
 - Android Studio atau VS Code + Flutter extension
-- Device fisik/emulator Android atau iOS simulator
+- Device fisik/emulator Android
+- iOS simulator (khusus macOS)
 
-Verifikasi instalasi:
+Verifikasi:
 
 ```bash
-flutter doctor
+flutter doctor -v
 ```
 
-## Cara Setup dan Menjalankan
+## Setup Project (Wajib Sebelum Run)
 
-1. Clone repository dan masuk ke folder project.
-2. Install dependencies:
+Jalankan dari root project:
 
 ```bash
 flutter pub get
 ```
 
-3. Generate localization (jika diperlukan setelah update ARB):
+Generate object classes (code generation):
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+Generate localization (jika ARB berubah):
 
 ```bash
 flutter gen-l10n
 ```
 
-4. Jalankan aplikasi:
+## Menjalankan Aplikasi (Debug)
+
+### Android - Free
+
+```bash
+flutter run --flavor free -t lib/main_free.dart
+```
+
+### Android - Paid
+
+```bash
+flutter run --flavor paid -t lib/main_paid.dart
+```
+
+### iOS (macOS) - Free
+
+```bash
+flutter run -d ios --flavor free -t lib/main_free.dart
+```
+
+### iOS (macOS) - Paid
+
+```bash
+flutter run -d ios --flavor paid -t lib/main_paid.dart
+```
+
+### Default Run (tanpa flavor)
 
 ```bash
 flutter run
 ```
 
-## Quality Check
+Default run ini akan memakai `lib/main.dart` (mode paid).
 
-Jalankan analisis statis:
+## Build APK Debug per Flavor
+
+Free:
+
+```bash
+flutter build apk --debug --flavor free -t lib/main_free.dart
+```
+
+Paid:
+
+```bash
+flutter build apk --debug --flavor paid -t lib/main_paid.dart
+```
+
+## Quality Check
 
 ```bash
 flutter analyze
-```
-
-Jalankan test:
-
-```bash
 flutter test
 ```
 
 ## Perizinan Platform
 
-- Android: internet + camera permission sudah dikonfigurasi.
-- iOS: camera dan photo library usage description sudah disiapkan.
+- Android: internet, camera, dan location permission sudah dikonfigurasi.
+- iOS: camera, photo library, dan location usage description sudah disiapkan.
+
+## Troubleshooting Singkat
+
+1. Flavor tidak sesuai (harusnya free tapi yang jalan paid)
+- Paling aman: sertakan **keduanya** `--flavor` dan `-t`.
+- Contoh aman: `flutter run --flavor free -t lib/main_free.dart`.
+- Alternatif valid: `flutter run --flavor free -t lib/main.dart` (auto-detect flavor).
+
+2. Error class generated tidak ditemukan
+- Jalankan ulang:
+
+```bash
+dart run build_runner build --delete-conflicting-outputs
+```
+
+3. String localization baru belum muncul
+- Jalankan ulang:
+
+```bash
+flutter gen-l10n
+```
+
+4. Build gagal setelah pull terbaru
+- Jalankan urutan aman:
+
+```bash
+flutter clean
+flutter pub get
+dart run build_runner build --delete-conflicting-outputs
+flutter gen-l10n
+flutter analyze
+```
 
 ## Submission Notes
 

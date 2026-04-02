@@ -470,6 +470,216 @@ abstract class AppLocalizations {
   /// **'Location'**
   String get locationLabel;
 
+  /// No description provided for @locationPickerTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick Location'**
+  String get locationPickerTitle;
+
+  /// No description provided for @saveLocationButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Save'**
+  String get saveLocationButton;
+
+  /// No description provided for @mapTapInstruction.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the map or use your current GPS location.'**
+  String get mapTapInstruction;
+
+  /// No description provided for @locationNotSelectedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No location selected.'**
+  String get locationNotSelectedMessage;
+
+  /// Selected coordinates text
+  ///
+  /// In en, this message translates to:
+  /// **'Coordinates: {latitude}, {longitude}'**
+  String selectedCoordinatesLabel(String latitude, String longitude);
+
+  /// No description provided for @unknownAddressLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Address unavailable'**
+  String get unknownAddressLabel;
+
+  /// No description provided for @pickLocationFromMapButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Location'**
+  String get pickLocationFromMapButton;
+
+  /// No description provided for @changeLocationButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Change Location'**
+  String get changeLocationButton;
+
+  /// No description provided for @clearLocationButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear Location'**
+  String get clearLocationButton;
+
+  /// No description provided for @locationDisabledInFreeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Location pin is currently unavailable in FREE mode.'**
+  String get locationDisabledInFreeMessage;
+
+  /// No description provided for @paidFlavorBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'PAID'**
+  String get paidFlavorBadge;
+
+  /// No description provided for @freeFlavorBadge.
+  ///
+  /// In en, this message translates to:
+  /// **'FREE'**
+  String get freeFlavorBadge;
+
+  /// No description provided for @locationEnabledForPaidTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'PAID mode is active'**
+  String get locationEnabledForPaidTitle;
+
+  /// No description provided for @locationEnabledForPaidDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You can pin location from map or GPS for this story.'**
+  String get locationEnabledForPaidDescription;
+
+  /// No description provided for @locationLockedForFreeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FREE mode is active'**
+  String get locationLockedForFreeTitle;
+
+  /// No description provided for @locationLockedForFreeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'Location pin is still locked in this mode.'**
+  String get locationLockedForFreeDescription;
+
+  /// No description provided for @modeDifferenceSheetTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'What\'s different between FREE and PAID?'**
+  String get modeDifferenceSheetTitle;
+
+  /// No description provided for @modeDifferenceFreeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'FREE'**
+  String get modeDifferenceFreeTitle;
+
+  /// No description provided for @modeDifferenceFreeDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'You can post stories with photo and description.'**
+  String get modeDifferenceFreeDescription;
+
+  /// No description provided for @modeDifferencePaidTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'PAID'**
+  String get modeDifferencePaidTitle;
+
+  /// No description provided for @modeDifferencePaidDescription.
+  ///
+  /// In en, this message translates to:
+  /// **'All FREE features plus map/GPS location pin for stories.'**
+  String get modeDifferencePaidDescription;
+
+  /// No description provided for @locationModeReadySummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Location feature is active'**
+  String get locationModeReadySummary;
+
+  /// No description provided for @locationModeLockedSummary.
+  ///
+  /// In en, this message translates to:
+  /// **'Location feature is locked'**
+  String get locationModeLockedSummary;
+
+  /// No description provided for @locationModeTapHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap to view details'**
+  String get locationModeTapHint;
+
+  /// No description provided for @seeModeDifferenceButton.
+  ///
+  /// In en, this message translates to:
+  /// **'See feature differences'**
+  String get seeModeDifferenceButton;
+
+  /// No description provided for @selectedLocationPreviewTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Selected Location Preview'**
+  String get selectedLocationPreviewTitle;
+
+  /// No description provided for @useMyLocationButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Use My Current Location'**
+  String get useMyLocationButton;
+
+  /// No description provided for @findingMyLocationLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Finding your location...'**
+  String get findingMyLocationLabel;
+
+  /// No description provided for @locationServiceDisabledMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please enable location service first.'**
+  String get locationServiceDisabledMessage;
+
+  /// No description provided for @locationPermissionDeniedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is required to use GPS.'**
+  String get locationPermissionDeniedMessage;
+
+  /// No description provided for @locationPermissionDeniedForeverMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Location permission is blocked. Please enable it from app settings.'**
+  String get locationPermissionDeniedForeverMessage;
+
+  /// No description provided for @failedToGetCurrentLocationMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to get your current location. Please try again.'**
+  String get failedToGetCurrentLocationMessage;
+
+  /// No description provided for @retryLoadMoreStoriesButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry loading more'**
+  String get retryLoadMoreStoriesButton;
+
+  /// No description provided for @noMoreStoriesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'No more stories.'**
+  String get noMoreStoriesMessage;
+
+  /// No description provided for @markerInfoTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Location Detail'**
+  String get markerInfoTitle;
+
   /// No description provided for @detailLoadingMessage.
   ///
   /// In en, this message translates to:

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
 import 'package:intl/intl.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:provider/provider.dart';
 import 'package:story_app/l10n/app_localizations.dart';
 
+import '../../../../core/location/reverse_geocoding_service.dart';
 import '../../../../core/network/app_error_message_resolver.dart';
 import '../../../../shared/widgets/gradient_background.dart';
 import '../../../../shared/widgets/shimmer_loading.dart';
@@ -33,6 +36,114 @@ class _StoryDetailPageState extends State<StoryDetailPage> {
   void _loadStory() {
     _storyFuture = context.read<StoryRepository>().getStoryDetail(
       widget.storyId,
+    );
+  }
+
+  Future<void> _showLocationInfo(StoryItem story) async {
+    final AppLocalizations l10n = AppLocalizations.of(context)!;
+    final double? lat = story.lat;
+    final double? lon = story.lon;
+    if (lat == null || lon == null) {
+      return;
+    }
+
+    final ReverseGeocodingService geocoding = context
+        .read<ReverseGeocodingService>();
+    final String address = await geocoding.getAddress(
+      latitude: lat,
+      longitude: lon,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    await showModalBottomSheet<void>(
+      context: context,
+      showDragHandle: true,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: SizedBox(
+            width: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(20, 8, 20, 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    l10n.markerInfoTitle,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    story.name,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                  const SizedBox(height: 8),
+                  Text(address.isEmpty ? l10n.unknownAddressLabel : address),
+                  const SizedBox(height: 6),
+                  Text(
+                    l10n.selectedCoordinatesLabel(
+                      lat.toStringAsFixed(5),
+                      lon.toStringAsFixed(5),
+                    ),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildStoryLocationMap(StoryItem story) {
+    final double lat = story.lat!;
+    final double lon = story.lon!;
+    final LatLng location = LatLng(lat, lon);
+
+    return SizedBox(
+      height: 220,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(16),
+        child: FlutterMap(
+          options: MapOptions(initialCenter: location, initialZoom: 13),
+          children: <Widget>[
+            TileLayer(
+              urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+              userAgentPackageName: 'com.example.story_app',
+            ),
+            MarkerLayer(
+              markers: <Marker>[
+                Marker(
+                  point: location,
+                  width: 56,
+                  height: 56,
+                  child: GestureDetector(
+                    onTap: () => _showLocationInfo(story),
+                    child: const Icon(
+                      Icons.location_on_rounded,
+                      color: Colors.red,
+                      size: 52,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            RichAttributionWidget(
+              attributions: <SourceAttribution>[
+                TextSourceAttribution(
+                  'OpenStreetMap contributors',
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
     );
   }
 
@@ -141,8 +252,16 @@ class _StoryDetailPageState extends State<StoryDetailPage> {
                             l10n.locationLabel,
                             style: Theme.of(context).textTheme.titleSmall,
                           ),
-                          const SizedBox(height: 6),
-                          Text('${story.lat}, ${story.lon}'),
+                          const SizedBox(height: 8),
+                          _buildStoryLocationMap(story),
+                          const SizedBox(height: 8),
+                          Text(
+                            l10n.selectedCoordinatesLabel(
+                              story.lat!.toStringAsFixed(5),
+                              story.lon!.toStringAsFixed(5),
+                            ),
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
                         ],
                       ],
                     ),

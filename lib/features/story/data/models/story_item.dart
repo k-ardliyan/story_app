@@ -1,33 +1,41 @@
-class StoryItem {
-  const StoryItem({
-    required this.id,
-    required this.name,
-    required this.description,
-    required this.photoUrl,
-    required this.createdAt,
-    this.lat,
-    this.lon,
-  });
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-  final String id;
-  final String name;
-  final String description;
-  final String photoUrl;
-  final DateTime createdAt;
-  final double? lat;
-  final double? lon;
+part 'story_item.freezed.dart';
+part 'story_item.g.dart';
 
-  factory StoryItem.fromJson(Map<String, dynamic> json) {
-    return StoryItem(
-      id: (json['id'] as String?) ?? '',
-      name: (json['name'] as String?) ?? '-',
-      description: (json['description'] as String?) ?? '',
-      photoUrl: (json['photoUrl'] as String?) ?? '',
-      createdAt:
-          DateTime.tryParse((json['createdAt'] as String?) ?? '') ??
-          DateTime.fromMillisecondsSinceEpoch(0),
-      lat: (json['lat'] as num?)?.toDouble(),
-      lon: (json['lon'] as num?)?.toDouble(),
-    );
+@freezed
+class StoryItem with _$StoryItem {
+  const StoryItem._();
+
+  const factory StoryItem({
+    @Default('') String id,
+    @Default('-') String name,
+    @Default('') String description,
+    @Default('') String photoUrl,
+    @StoryDateTimeConverter() required DateTime createdAt,
+    double? lat,
+    double? lon,
+  }) = _StoryItem;
+
+  factory StoryItem.fromJson(Map<String, dynamic> json) =>
+      _$StoryItemFromJson(json);
+}
+
+class StoryDateTimeConverter implements JsonConverter<DateTime, Object?> {
+  const StoryDateTimeConverter();
+
+  @override
+  DateTime fromJson(Object? value) {
+    if (value is String) {
+      final DateTime? parsed = DateTime.tryParse(value);
+      if (parsed != null) {
+        return parsed;
+      }
+    }
+
+    return DateTime.fromMillisecondsSinceEpoch(0);
   }
+
+  @override
+  Object toJson(DateTime value) => value.toIso8601String();
 }

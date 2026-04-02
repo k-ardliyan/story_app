@@ -22,6 +22,8 @@
 	<string>StoryBloom needs photo access to select story images.</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>StoryBloom needs permission to save captured photos.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>StoryBloom uses location to attach story coordinates from map selection.</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

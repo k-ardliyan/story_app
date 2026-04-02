@@ -207,6 +207,122 @@ class AppLocalizationsId extends AppLocalizations {
   String get locationLabel => 'Lokasi';
 
   @override
+  String get locationPickerTitle => 'Pilih Lokasi';
+
+  @override
+  String get saveLocationButton => 'Simpan';
+
+  @override
+  String get mapTapInstruction => 'Ketuk peta atau gunakan lokasi GPS kamu.';
+
+  @override
+  String get locationNotSelectedMessage => 'Belum ada lokasi dipilih.';
+
+  @override
+  String selectedCoordinatesLabel(String latitude, String longitude) {
+    return 'Koordinat: $latitude, $longitude';
+  }
+
+  @override
+  String get unknownAddressLabel => 'Alamat tidak tersedia';
+
+  @override
+  String get pickLocationFromMapButton => 'Pilih Lokasi';
+
+  @override
+  String get changeLocationButton => 'Ubah Lokasi';
+
+  @override
+  String get clearLocationButton => 'Hapus Lokasi';
+
+  @override
+  String get locationDisabledInFreeMessage =>
+      'Pin lokasi belum tersedia di mode FREE.';
+
+  @override
+  String get paidFlavorBadge => 'PAID';
+
+  @override
+  String get freeFlavorBadge => 'FREE';
+
+  @override
+  String get locationEnabledForPaidTitle => 'Mode PAID aktif';
+
+  @override
+  String get locationEnabledForPaidDescription =>
+      'Kamu bisa menandai lokasi dari peta atau GPS untuk cerita ini.';
+
+  @override
+  String get locationLockedForFreeTitle => 'Mode FREE aktif';
+
+  @override
+  String get locationLockedForFreeDescription =>
+      'Fitur pin lokasi masih terkunci di mode ini.';
+
+  @override
+  String get modeDifferenceSheetTitle => 'Apa beda mode FREE dan PAID?';
+
+  @override
+  String get modeDifferenceFreeTitle => 'FREE';
+
+  @override
+  String get modeDifferenceFreeDescription =>
+      'Kamu bisa upload cerita dengan foto dan deskripsi.';
+
+  @override
+  String get modeDifferencePaidTitle => 'PAID';
+
+  @override
+  String get modeDifferencePaidDescription =>
+      'Semua fitur FREE ditambah pin lokasi dari peta/GPS.';
+
+  @override
+  String get locationModeReadySummary => 'Fitur lokasi aktif';
+
+  @override
+  String get locationModeLockedSummary => 'Fitur lokasi terkunci';
+
+  @override
+  String get locationModeTapHint => 'Ketuk untuk melihat detail';
+
+  @override
+  String get seeModeDifferenceButton => 'Lihat perbedaan fitur';
+
+  @override
+  String get selectedLocationPreviewTitle => 'Pratinjau Lokasi Terpilih';
+
+  @override
+  String get useMyLocationButton => 'Gunakan Lokasi Saya';
+
+  @override
+  String get findingMyLocationLabel => 'Mencari lokasi kamu...';
+
+  @override
+  String get locationServiceDisabledMessage =>
+      'Aktifkan layanan lokasi terlebih dahulu.';
+
+  @override
+  String get locationPermissionDeniedMessage =>
+      'Izin lokasi diperlukan untuk menggunakan GPS.';
+
+  @override
+  String get locationPermissionDeniedForeverMessage =>
+      'Izin lokasi diblokir. Aktifkan kembali lewat pengaturan aplikasi.';
+
+  @override
+  String get failedToGetCurrentLocationMessage =>
+      'Gagal mengambil lokasi saat ini. Coba lagi.';
+
+  @override
+  String get retryLoadMoreStoriesButton => 'Coba muat lagi';
+
+  @override
+  String get noMoreStoriesMessage => 'Tidak ada cerita berikutnya.';
+
+  @override
+  String get markerInfoTitle => 'Detail Lokasi';
+
+  @override
   String get detailLoadingMessage => 'Memuat detail cerita...';
 
   @override

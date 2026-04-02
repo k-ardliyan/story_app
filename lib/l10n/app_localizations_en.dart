@@ -207,6 +207,124 @@ class AppLocalizationsEn extends AppLocalizations {
   String get locationLabel => 'Location';
 
   @override
+  String get locationPickerTitle => 'Pick Location';
+
+  @override
+  String get saveLocationButton => 'Save';
+
+  @override
+  String get mapTapInstruction =>
+      'Tap the map or use your current GPS location.';
+
+  @override
+  String get locationNotSelectedMessage => 'No location selected.';
+
+  @override
+  String selectedCoordinatesLabel(String latitude, String longitude) {
+    return 'Coordinates: $latitude, $longitude';
+  }
+
+  @override
+  String get unknownAddressLabel => 'Address unavailable';
+
+  @override
+  String get pickLocationFromMapButton => 'Choose Location';
+
+  @override
+  String get changeLocationButton => 'Change Location';
+
+  @override
+  String get clearLocationButton => 'Clear Location';
+
+  @override
+  String get locationDisabledInFreeMessage =>
+      'Location pin is currently unavailable in FREE mode.';
+
+  @override
+  String get paidFlavorBadge => 'PAID';
+
+  @override
+  String get freeFlavorBadge => 'FREE';
+
+  @override
+  String get locationEnabledForPaidTitle => 'PAID mode is active';
+
+  @override
+  String get locationEnabledForPaidDescription =>
+      'You can pin location from map or GPS for this story.';
+
+  @override
+  String get locationLockedForFreeTitle => 'FREE mode is active';
+
+  @override
+  String get locationLockedForFreeDescription =>
+      'Location pin is still locked in this mode.';
+
+  @override
+  String get modeDifferenceSheetTitle =>
+      'What\'s different between FREE and PAID?';
+
+  @override
+  String get modeDifferenceFreeTitle => 'FREE';
+
+  @override
+  String get modeDifferenceFreeDescription =>
+      'You can post stories with photo and description.';
+
+  @override
+  String get modeDifferencePaidTitle => 'PAID';
+
+  @override
+  String get modeDifferencePaidDescription =>
+      'All FREE features plus map/GPS location pin for stories.';
+
+  @override
+  String get locationModeReadySummary => 'Location feature is active';
+
+  @override
+  String get locationModeLockedSummary => 'Location feature is locked';
+
+  @override
+  String get locationModeTapHint => 'Tap to view details';
+
+  @override
+  String get seeModeDifferenceButton => 'See feature differences';
+
+  @override
+  String get selectedLocationPreviewTitle => 'Selected Location Preview';
+
+  @override
+  String get useMyLocationButton => 'Use My Current Location';
+
+  @override
+  String get findingMyLocationLabel => 'Finding your location...';
+
+  @override
+  String get locationServiceDisabledMessage =>
+      'Please enable location service first.';
+
+  @override
+  String get locationPermissionDeniedMessage =>
+      'Location permission is required to use GPS.';
+
+  @override
+  String get locationPermissionDeniedForeverMessage =>
+      'Location permission is blocked. Please enable it from app settings.';
+
+  @override
+  String get failedToGetCurrentLocationMessage =>
+      'Failed to get your current location. Please try again.';
+
+  @override
+  String get retryLoadMoreStoriesButton => 'Retry loading more';
+
+  @override
+  String get noMoreStoriesMessage => 'No more stories.';
+
+  @override
+  String get markerInfoTitle => 'Location Detail';
+
+  @override
   String get detailLoadingMessage => 'Loading story detail...';
 
   @override
