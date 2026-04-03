@@ -119,6 +119,34 @@ flutter run
 
 Default run ini akan memakai `lib/main.dart` (mode paid).
 
+## Konfigurasi IDE untuk Build Variant
+
+### VS Code
+
+Project sudah menyertakan konfigurasi Run and Debug di file `.vscode/launch.json` untuk:
+
+- `free_debug`, `free_profile`, `free_release`
+- `paid_debug`, `paid_profile`, `paid_release`
+
+Cara pakai:
+
+1. Buka tab **Run and Debug**.
+2. Pilih konfigurasi yang diinginkan (misalnya `free_debug`).
+3. Klik **Start Debugging**.
+
+### Android Studio
+
+Jika menggunakan Android Studio, buat konfigurasi Flutter per flavor dari menu **Run > Edit Configurations**:
+
+1. Tambah konfigurasi baru tipe **Flutter**.
+2. Isi **Dart entrypoint** dengan salah satu berikut:
+  - `lib/main_free.dart`
+  - `lib/main_paid.dart`
+3. Isi **Additional run args** sesuai flavor:
+  - `--flavor free`
+  - `--flavor paid`
+4. Pilih mode build sesuai kebutuhan (debug/profile/release), lalu simpan.
+
 ## Build APK Debug per Flavor
 
 Free:

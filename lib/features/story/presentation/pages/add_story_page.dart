@@ -228,11 +228,24 @@ class _AddStoryPageState extends State<AddStoryPage> {
           Row(
             children: <Widget>[
               FlavorChip(onTap: () => _showModeInfoSheet(l10n)),
-              const Spacer(),
-              TextButton.icon(
-                onPressed: () => _showModeInfoSheet(l10n),
-                icon: const Icon(Icons.info_outline),
-                label: Text(l10n.seeModeDifferenceButton),
+              const SizedBox(width: 8),
+              Expanded(
+                child: TextButton.icon(
+                  onPressed: () => _showModeInfoSheet(l10n),
+                  style: TextButton.styleFrom(
+                    alignment: Alignment.centerRight,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 8,
+                    ),
+                  ),
+                  icon: const Icon(Icons.info_outline),
+                  label: Text(
+                    l10n.seeModeDifferenceButton,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ),
             ],
           ),
